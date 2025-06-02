@@ -7,7 +7,11 @@
 #       FILE NAME:  210_final.py 
 #
 # DESCRIPTION
-#    This program ...
+#   Weather‑station application for Raspberry Pi. A Bottle web server exposes
+#   routes that return live readings (temperature, pressure, altitude, wind
+#   speed, wind direction). A small password‑protected Tkinter GUI lets an
+#   operator start the server and open the web interface locally. Hardware is
+#   accessed via GPIO, ADS7830 ADC, and BMP085 sensors.
 # *****************************************************************************
 import sys
 import tkinter as tk
@@ -54,7 +58,7 @@ adc = ADS7830()
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   This function sets up the RPi GPIO pins using the GPIO library.
+#   Serve the landing page with navigation buttons for every sensor read-out.
 #
 # INPUT PARAMETERS:
 #   none
@@ -63,7 +67,7 @@ adc = ADS7830()
 #   none
 #
 # RETURN:
-#   none
+#   str – HTML for the landing page
 # -----------------------------------------------------------------------------
 @route('/')
 def get_time():
@@ -83,7 +87,7 @@ def get_time():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Read ambient temperature and humidity from the BMP085 sensor and report it in °F.
 #
 # INPUT PARAMETERS:
 #   none
@@ -92,7 +96,7 @@ def get_time():
 #   none
 #
 # RETURN:
-#   none
+#   str – Temperature string plus HTML “Back” button
 # -----------------------------------------------------------------------------
 @route('/display_temp')
 def get_humidity_temp():
@@ -106,7 +110,8 @@ def get_humidity_temp():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Calculate wind speed by counting anemometer rotations during a fixed window
+#   and converting the count to miles per hour (MPH).
 #
 # INPUT PARAMETERS:
 #   none
@@ -115,7 +120,7 @@ def get_humidity_temp():
 #   none
 #
 # RETURN:
-#   none
+#   str – Wind‑speed string plus HTML “Back” button
 # -----------------------------------------------------------------------------
 @route('/display_speed')
 def get_wind_speed():
@@ -140,7 +145,8 @@ def get_wind_speed():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Convert the ADC reading from the wind vane to the nearest cardinal
+#   direction.
 #
 # INPUT PARAMETERS:
 #   none
@@ -149,7 +155,7 @@ def get_wind_speed():
 #   none
 #
 # RETURN:
-#   none
+#   str – Wind direction plus HTML “Back” button
 # -----------------------------------------------------------------------------
 @route('/display_direction')
 def get_wind_direction():
@@ -184,7 +190,8 @@ def get_wind_direction():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Read barometric and sea‑level pressure, convert to inches of mercury, and
+#   display both values.
 #
 # INPUT PARAMETERS:
 #   none
@@ -193,9 +200,8 @@ def get_wind_direction():
 #   none
 #
 # RETURN:
-#   none
+#   str – Pressure readings plus HTML “Back” button
 # -----------------------------------------------------------------------------
-@route('/display_pressure')
 def get_pressure():
     html_string = '''
         <form>
@@ -209,7 +215,7 @@ def get_pressure():
      
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Report altitude above sea level from the BMP085 sensor.
 #
 # INPUT PARAMETERS:
 #   none
@@ -218,7 +224,7 @@ def get_pressure():
 #   none
 #
 # RETURN:
-#   none
+#   str – Altitude string plus HTML “Back” button
 # -----------------------------------------------------------------------------
 @route('/display_altitude')
 def get_altitude():
@@ -234,7 +240,7 @@ def get_altitude():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Start the Bottle web server on port 8080 (blocking call).
 #
 # INPUT PARAMETERS:
 #   none
@@ -250,7 +256,7 @@ def start_server():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Open the default web browser to the locally hosted server URL.
 #
 # INPUT PARAMETERS:
 #   none
@@ -266,7 +272,8 @@ def launch_website():
 
 # -----------------------------------------------------------------------------
 # DESCRIPTION
-#   ...
+#   Build a minimal password‑protected Tkinter GUI for launching the web
+#   server.
 #
 # INPUT PARAMETERS:
 #   none
